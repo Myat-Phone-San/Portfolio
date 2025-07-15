@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myat Phone San - AI Engineer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter and Poppins for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Light background similar to reference */
+            color: #333; /* Dark text */
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+        .section-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 1rem 4rem 1rem; /* Adjust padding for fixed header */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            position: relative; /* For background shapes */
+            overflow: hidden; /* Hide overflowing shapes */
+        }
+        .section-container.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #f97316; /* Orange accent for active/hover */
+            transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .skill-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+
+        /* Specific animations for home section icons */
+        @keyframes float1 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes float2 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-10px, 10px); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes float3 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(15px, 5px); }
+            100% { transform: translate(0, 0); }
+        }
+        .icon-float-1 { animation: float1 4s ease-in-out infinite; }
+        .icon-float-2 { animation: float2 5s ease-in-out infinite; }
+        .icon-float-3 { animation: float3 4.5s ease-in-out infinite; }
+
+        /* Abstract background shapes */
+        .shape-1 {
+            position: absolute;
+            top: 5%;
+            left: -5%;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #f97316, #fbbf24);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        .shape-2 {
+            position: absolute;
+            bottom: 10%;
+            right: -5%;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        .shape-3 {
+            position: absolute;
+            top: 30%;
+            right: -8%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #ef4444, #f97316);
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .shape-4 {
+            position: absolute;
+            bottom: 20%;
+            left: -10%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #22c55e, #34d399);
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f97316;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full bg-white bg-opacity-95 z-50 shadow-md py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <div class="flex items-center">
+                <div class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm font-semibold tracking-widest">
+                    IT<br>Engineer
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Home</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">About</a>
+                <a href="#skills" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Skills</a>
+                <a href="#projects" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Projects</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Contact</a>
+                <a href="https://drive.google.com/file/d/11r_DjhKHMhLH6pxI1gQdp_Fqh2HI9R__/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section-container bg-white text-center md:text-left relative">
+        <div class="shape-1"></div>
+        <div class="shape-2"></div>
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4 z-10">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <p class="text-orange-500 text-lg mb-2">Hello, I'm</p>
+                <h1 class="text-6xl md:text-7xl font-extrabold text-gray-800 leading-tight mb-4">MYAT PHONE SAN</h1>
+                <p class="text-2xl text-gray-600 mb-6">A Creative IT Engineer from Meiktila</p>
+                <p class="text-lg text-gray-500 mb-8">I'm very passionate and dedicated to my work.</p>
+                <div class="flex items-center space-x-4">
+                    <a href="#about" class="px-8 py-3 bg-orange-500 text-white rounded-full text-lg font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">About Me</a>
+                    <a href="https://www.facebook.com/myat.phone.san.12668/" target="_blank" class="text-gray-600 hover:text-blue-600 text-2xl transition duration-300"><i class="fab fa-facebook"></i></a>
+                    <a href="https://github.com/Myat-Phone-San" target="_blank" class="text-gray-600 hover:text-gray-900 text-2xl transition duration-300"><i class="fab fa-github"></i></a>
+                    <a href="mailto:myatphonesan131619@gmail.com" class="text-gray-600 hover:text-red-600 text-2xl transition duration-300"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative flex justify-center items-center">
+                <div class="relative w-80 h-80 md:w-96 md:h-96 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden shadow-2xl">
+                    <img src="profilephoto.jpg" alt="Myat Phone San Profile" class="w-full h-full object-cover rounded-full z-10 transform scale-105">
+                    <!-- Floating icons -->
+                    <i class="fab fa-react absolute text-blue-400 text-5xl icon-float-1" style="top: 10%; left: 10%;"></i>
+                    <i class="fab fa-node-js absolute text-green-500 text-5xl icon-float-2" style="top: 20%; right: 5%;"></i>
+                    <i class="fab fa-python absolute text-yellow-500 text-5xl icon-float-3" style="bottom: 15%; left: 5%;"></i>
+                    <i class="fas fa-brain absolute text-purple-500 text-5xl icon-float-1" style="bottom: 5%; right: 20%;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-container bg-gray-50">
+        <div class="shape-3"></div>
+        <div class="container mx-auto max-w-5xl text-center z-10">
+            <h2 class="text-4xl font-bold text-orange-500 mb-2">About Me</h2>
+            <p class="text-gray-700 text-lg leading-relaxed mb-4">
+               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Deep knowledge of machine learning algorithms. Proficient in in AI libraries and frameworks. Practical experience with projects such as the Plant Disease Detection System (leveraging Deep Learning and Computer Vision), Agriculture Chatbot System (applying Natural Language Processing), Passport OCR System (utilizing Computer Vision for data extraction), and Myanmar Population Prediction System (employing data analysis).
+            </p>
+            <p class="text-gray-700 text-lg leading-relaxed mb-12">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; My 3-month internship at Unity IT Solution Co.,Ltd provided valuable hands-on experience with Laravel Livewire, Tailwind CSS, Node.js, and Python, where I contributed to real-world and government system projects.
+            </p>
+
+            <h2 class="text-4xl font-bold text-gray-800 mb-8">Education & Certificates</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-500">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Education</h3>
+                    <p class="text-lg text-gray-700">
+                        <h6 class="text-lg font-semibold text-gray-800 mb-1">Technological University(Meiktila)</h6>
+                        <li>Bachelor of Engineering in Information Technology (BE.IT-1)</li>
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Certificates</h3>
+                    <ul class="list-none text-lg text-gray-700 space-y-2">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i>Python Basic to Advance</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i>Special Web Design (SWD)</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i>Web Application Development</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-4 bg-white p-6 rounded-lg shadow-md inline-block border-t-4 border-blue-500">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Languages</h3>
+                <ul class="list-none text-lg text-gray-700 space-y-2">
+                    <li><i class="fas fa-globe text-yellow-500 mr-2"></i>English: Intermediate Level (Four Skills)</li>
+                    <li><i class="fas fa-globe text-yellow-500 mr-2"></i>Japanese: Japanese Language Proficiency Test (JLPT) N5</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section-container bg-gray-100">
+        <div class="shape-4"></div>
+        <div class="container mx-auto max-w-6xl text-center z-10">
+            <h2 class="text-4xl font-bold text-orange-500 mb-12">My Dev Arsenal</h2>
+
+            <!-- Languages -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">Languages</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-python text-blue-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Python</h4>
+                    <p class="text-gray-500 text-sm">Powerful & general-purpose language.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-html5 text-orange-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">HTML</h4>
+                    <p class="text-gray-500 text-sm">Markup language for web content.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-css3-alt text-blue-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">CSS</h4>
+                    <p class="text-gray-500 text-sm">Style language for web design.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-js-square text-yellow-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">JavaScript</h4>
+                    <p class="text-gray-500 text-sm">Web scripting & dynamic content.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-php text-purple-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">PHP</h4>
+                    <p class="text-gray-500 text-sm">Server-side scripting language.</p>
+                </div>
+                <!-- <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-cogs text-gray-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">C++</h4>
+                    <p class="text-gray-500 text-sm">High-performance programming.</p>
+                </div> -->
+            </div>
+
+              <!-- Databases -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">Databases</h3>
+            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-12 max-w-lg"> <!-- Adjusted grid columns for better centering of 2 items -->
+                    <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                        <i class="fas fa-database text-blue-700 text-4xl mb-3"></i>
+                        <h4 class="text-xl font-semibold text-gray-800">MySQL</h4>
+                        <p class="text-gray-500 text-sm">Relational database system.</p>
+                    </div>
+                    <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                        <i class="fas fa-leaf text-green-700 text-4xl mb-3"></i> <!-- Leaf icon for MongoDB -->
+                        <h4 class="text-xl font-semibold text-gray-800">MongoDB</h4>
+                        <p class="text-gray-500 text-sm">NoSQL document database.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Frameworks & Libraries -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">Frameworks & Libraries</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-react text-blue-400 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">React</h4>
+                    <p class="text-gray-500 text-sm">Frontend library for dynamic UIs.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-node-js text-green-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Node.js</h4>
+                    <p class="text-gray-500 text-sm">JavaScript runtime environment.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-server text-gray-500 text-4xl mb-3"></i> <!-- Generic icon for Express.js -->
+                    <h4 class="text-xl font-semibold text-gray-800">Express.js</h4>
+                    <p class="text-gray-500 text-sm">Minimal Node.js web framework.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-laravel text-red-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Laravel</h4>
+                    <p class="text-gray-500 text-sm">PHP web framework.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-python text-green-600 text-4xl mb-3"></i> <!-- Python icon for Django -->
+                    <h4 class="text-xl font-semibold text-gray-800">Django</h4>
+                    <p class="text-gray-500 text-sm">High-level Python web framework.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-python text-blue-600 text-4xl mb-3"></i> <!-- Python icon for Flask -->
+                    <h4 class="text-xl font-semibold text-gray-800">Flask</h4>
+                    <p class="text-gray-500 text-sm">Micro Python web framework.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-chart-line text-purple-500 text-4xl mb-3"></i> <!-- Generic icon for Streamlit -->
+                    <h4 class="text-xl font-semibold text-gray-800">Streamlit</h4>
+                    <p class="text-gray-500 text-sm">For interactive UI in Python.</p>
+                </div>
+               
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-wind text-blue-300 text-4xl mb-3"></i> <!-- Wind icon for Tailwind CSS -->
+                    <h4 class="text-xl font-semibold text-gray-800">Tailwind CSS</h4>
+                    <p class="text-gray-500 text-sm">Utility-first CSS framework.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-bootstrap text-purple-700 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Bootstrap</h4>
+                    <p class="text-gray-500 text-sm">CSS framework for responsive design.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-sync-alt text-gray-500 text-4xl mb-3"></i> <!-- Generic icon for Ajax -->
+                    <h4 class="text-xl font-semibold text-gray-800">Ajax</h4>
+                    <p class="text-gray-500 text-sm">Asynchronous JavaScript and XML.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-hand-pointer text-orange-500 text-4xl mb-3"></i> <!-- Generic icon for jQuery -->
+                    <h4 class="text-xl font-semibold text-gray-800">jQuery</h4>
+                    <p class="text-gray-500 text-sm">Fast, small, and feature-rich JS library.</p>
+                </div>
+            </div>
+
+            <!-- AI/ML Specific Libraries -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">AI/ML Specific Libraries</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-robot text-red-500 text-4xl mb-3"></i> <!-- Generic icon for Scikit-learn -->
+                    <h4 class="text-xl font-semibold text-gray-800">Scikit-learn</h4>
+                    <p class="text-gray-500 text-sm">Machine learning library for Python.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-brain text-purple-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">TensorFlow/Keras</h4>
+                    <p class="text-gray-500 text-sm">Deep Learning frameworks.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-eye text-green-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">OpenCV</h4>
+                    <p class="text-gray-500 text-sm">Computer Vision library.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-comments text-blue-500 text-4xl mb-3"></i> <!-- Generic icon for NLTK -->
+                    <h4 class="text-xl font-semibold text-gray-800">NLTK, spaCy</h4>
+                    <p class="text-gray-500 text-sm">Natural Language Processing libraries.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-calculator text-orange-500 text-4xl mb-3"></i> <!-- Generic icon for NumPy/Pandas -->
+                    <h4 class="text-xl font-semibold text-gray-800">NumPy, Pandas</h4>
+                    <p class="text-gray-500 text-sm">Data analysis and manipulation.</p>
+                </div>
+            </div>
+
+            <!-- Tools & Version Control -->
+              <h3 class="text-3xl font-bold text-gray-800 mb-8">Tools & Version Control</h3>
+            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl"> <!-- Adjusted grid columns for better centering of 2 items -->
+
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-git-alt text-red-600 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Git</h4>
+                    <p class="text-gray-500 text-sm">Distributed version control system.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fab fa-github text-gray-800 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">GitHub</h4>
+                    <p class="text-gray-500 text-sm">Code hosting & collaboration platform.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-paint-brush text-pink-500 text-4xl mb-3"></i> <!-- Generic for Design Tools -->
+                    <h4 class="text-xl font-semibold text-gray-800">Design Tools</h4>
+                    <p class="text-gray-500 text-sm">Adobe Photoshop, Illustrator, XD.</p>
+                </div>
+            </div>
+        </div>
+
+            <!-- Soft Skills -->
+              
+              <h3 class="text-3xl font-bold text-gray-800 mb-8">Soft Skills</h3>
+            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl"> <!-- Adjusted grid columns for better centering of 2 items -->
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-lightbulb text-yellow-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Problem Solving</h4>
+                    <p class="text-gray-500 text-sm">Analytical and creative solutions.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-comments text-blue-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Communication</h4>
+                    <p class="text-gray-500 text-sm">Clear and effective interaction.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
+                    <i class="fas fa-users text-green-500 text-4xl mb-3"></i>
+                    <h4 class="text-xl font-semibold text-gray-800">Teamwork</h4>
+                    <p class="text-gray-500 text-sm">Collaborative and supportive.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section-container bg-white">
+        <div class="container mx-auto max-w-6xl text-center z-10">
+            <h2 class="text-4xl font-bold text-orange-500 mb-4">Projects</h2>
+            <p class="text-gray-700 text-lg mb-12">My Amazing Works</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- AI Project 1: Plant Disease Detection System -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Plant Disease Detection System</h3>
+                    <img src="project1.png" alt="Plant Disease Detection System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <p class="text-gray-600 text-sm mb-3 original-description">
+                        <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span>AI-powered image classification for accurate plant disease diagnosis.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Python, Deep Learning (TensorFlow/Keras), OpenCV, Streamlit, Google Colab.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Description:</span> Developed for the Department of Agriculture to manage plant health and disease.</li>
+                    </ul>
+                    </p>
+                    
+                </div>
+
+                <!-- AI Project 2: Agriculture Chatbot System -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Agriculture Chatbot System</h3>
+                    <img src="project2.png" alt="Agriculture Chatbot System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <p class="text-gray-600 text-sm mb-3 original-description">
+                        <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span>  Conversational AI assistant for agricultural topics</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Python, Natural Language Processing (NLTK, spaCy), Machine Learning</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Description:</span> Built an intelligent chatbot understanding and responding to agricultural queries, showcasing NLP</li>
+                    </ul>
+                    </p>
+                    
+                </div>
+
+                <!-- AI Project 3: Passport OCR System -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Passport Optical Character Recognition</h3>
+                    <img src="project3.png" alt="Passport OCR System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                     <p class="text-gray-600 text-sm mb-3 original-description">
+                        <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Optical Character Recognition for data extraction from passport documents.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Python, OpenCV, Tesseract OCR, Image Processing.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Description:</span> Data extraction from passport photo (e.g., date of birth, passport number) for Ministry of Hotels and Tourism.</li>
+                    </ul>
+                    </p>
+                   
+                </div>
+
+                
+
+                <!-- Other Project 1: Online Trading Management System -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Online Trading Management System</h3>
+                    <img src="project4.png" alt="Online Trading Management System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img"">
+                    <p class="text-gray-600 text-sm mb-3 original-description">
+                        <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Admin Auth, Dashboard, Teacher, Student, Course, Batch, Gallery Management.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Laravel (PHP), Livewire, MySQL, HTML, Tailwind CSS, JS, Ajax.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Description:</span> For Ministry of Commerce (MOC) to manage training programs.</li>
+                    </ul>
+                    </p>
+                   
+                </div>
+
+                <!-- Other Project 2: Online Wallet System (Unipay) -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Online Wallet System (Unipay)</h3>
+                    <img src="project5.jpg" alt="Online Wallet System (Unipay)" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <p class="text-gray-600 text-sm mb-3 original-description">
+                        <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> User authentication, wallet management, transactions, QR code payment..</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Laravel (Backend), PHP, MySQL, HTML, CSS, JS, Bootstrap, jQuery.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Security:</span> Implemented SHA-256 for secure transaction validations and data integrity.</li>
+                    </ul>
+                    </p>
+
+                </div>
+
+                <!-- Other Project 3: Omnichannel Messaging System -->
+                <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Omnichannel Messaging Platform</h3>
+                    <img src="project6.png" alt="Omnichannel Messaging System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <p class="text-gray-600 text-sm mb-3 original-description">
+                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Unified system for LINE, Telegram, Messenger, Instagram (send/receive messages).</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Technologies Used:</span> Node.js, Express.js, MySQL, Tailwind CSS, HTML.</li>
+                        <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Description:</span> Enables real-time messaging across all four platforms.</li>
+                    </ul>
+                    </p>
+                    
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-container bg-gray-100 relative">
+        <div class="shape-1" style="top: 80%; left: -10%; background: linear-gradient(45deg, #f97316, #fbbf24); opacity: 0.2; filter: blur(100px);"></div>
+        <div class="shape-2" style="top: 10%; right: -5%; background: linear-gradient(135deg, #6366f1, #8b5cf6); opacity: 0.2; filter: blur(100px);"></div>
+        <div class="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-start px-4 z-10">
+            <div class="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
+                <h2 class="text-4xl font-bold text-orange-500 mb-4">Contact Me</h2>
+                <p class="text-gray-700 text-lg mb-8">I Want To Hear From You</p>
+                <div class="flex flex-col space-y-4 text-lg text-gray-700">
+                    <p><i class="fas fa-map-marker-alt text-orange-500 mr-3"></i>Zaw Ti Ka Street, Yatanamanaung Quarter, Meiktila, Mandalay Region</p>
+                    <p><i class="fas fa-envelope text-orange-500 mr-3"></i><a href="mailto:myatphonesan131619@gmail.com" class="hover:underline">myatphonesan131619@gmail.com</a></p>
+                    <p><i class="fas fa-phone-alt text-orange-500 mr-3"></i><a href="tel:09762228526" class="hover:underline">09-762228526</a>, <a href="tel:09677173327" class="hover:underline">09-677173327</a></p>
+                    <p><i class="fab fa-github text-orange-500 mr-3"></i><a href="https://github.com/Myat-Phone-San" target="_blank" class="hover:underline">https://github.com/Myat-Phone-San</a></p>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full">
+                <form class="p-8 bg-white rounded-lg shadow-xl border border-gray-200">
+                    <div class="mb-5">
+                        <input type="text" id="contact-name" name="name" placeholder="Your Name" class="w-full p-4 rounded-md bg-gray-50 border border-gray-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
+                    </div>
+                    <div class="mb-5">
+                        <input type="email" id="contact-email" name="email" placeholder="Your Email" class="w-full p-4 rounded-md bg-gray-50 border border-gray-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
+                    </div>
+                    <div class="mb-6">
+                        <textarea id="contact-message" name="message" rows="6" placeholder="Your Message" class="w-full p-4 rounded-md bg-gray-50 border border-gray-300 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full px-6 py-3 bg-orange-500 text-white rounded-full text-lg font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Send Message</button>
+                    <p id="form-message" class="mt-4 text-center text-sm text-gray-600"></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zoom Modal -->
+<div id="image-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <span id="close-modal" class="absolute top-6 right-8 text-white text-4xl cursor-pointer">&times;</span>
+    <img id="modal-img" src="" alt="Zoomed Project" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl border-4 border-white">
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
+        <div class="container mx-auto px-4">
+            &copy; 2024 Myat Phone San. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - document.querySelector('nav').offsetHeight; // Adjust for fixed header
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const sections = document.querySelectorAll('.section-container');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the section is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                } else {
+                    entry.target.classList.remove('is-visible'); // Optional: reset animation when out of view
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Highlight active navigation link based on scroll position
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const navHeight = document.querySelector('nav').offsetHeight;
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight; // Adjust for fixed header
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.href.includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initial active link setting on load
+        window.addEventListener('load', () => {
+            const currentSection = window.location.hash.substring(1) || 'home';
+            const initialLink = document.querySelector(`.nav-link[href="#${currentSection}"]`);
+            if (initialLink) {
+                initialLink.classList.add('active');
+            }
+        });
+
+        // Basic form submission message (no backend)
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formMessage = document.getElementById('form-message');
+            formMessage.textContent = 'Thank you for your message!';
+            formMessage.classList.add('text-green-600');
+            this.reset();
+            setTimeout(() => {
+                formMessage.textContent = '';
+                formMessage.classList.remove('text-green-600');
+            }, 5000);
+        });
+
+        // Gemini API Integration for Project Descriptions
+        document.querySelectorAll('.generate-description-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                const projectCard = this.closest('.project-card');
+                const originalDescriptionElement = projectCard.querySelector('.original-description');
+                const generatedDescriptionElement = projectCard.querySelector('.generated-description');
+                const loadingSpinner = projectCard.querySelector('.loading-spinner');
+
+                // Toggle visibility
+                originalDescriptionElement.classList.add('hidden');
+                generatedDescriptionElement.classList.add('hidden');
+                loadingSpinner.style.display = 'block'; // Show spinner
+
+                const originalText = originalDescriptionElement.textContent.trim();
+                const prompt = `Please rewrite the following project description to be more engaging and highlight its key impact. Focus on the benefits and real-world application. Keep it concise, around 3-4 sentences. Here is the original description: ${originalText}`;
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // Canvas will automatically provide the API key
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const generatedText = result.candidates[0].content.parts[0].text;
+                        generatedDescriptionElement.textContent = generatedText;
+                        generatedDescriptionElement.classList.remove('hidden');
+                    } else {
+                        generatedDescriptionElement.textContent = 'Failed to generate description. Please try again.';
+                        generatedDescriptionElement.classList.remove('hidden');
+                        console.error('Gemini API response structure unexpected:', result);
+                    }
+                } catch (error) {
+                    generatedDescriptionElement.textContent = 'Error generating description. Please check your network connection.';
+                    generatedDescriptionElement.classList.remove('hidden');
+                    console.error('Error calling Gemini API:', error);
+                } finally {
+                    loadingSpinner.style.display = 'none'; // Hide spinner
+                    // Optionally, you can add a button to switch back to original description
+                    // For now, it just shows the generated one.
+                }
+            });
+        });
+
+
+         // Zoom modal for project images
+    document.querySelectorAll('.project-img').forEach(img => {
+        img.addEventListener('click', function() {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = this.src;
+            modal.classList.remove('hidden');
+        });
+    });
+
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('image-modal').classList.add('hidden');
+        document.getElementById('modal-img').src = '';
+    });
+
+    // Optional: Close modal on background click
+    document.getElementById('image-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.add('hidden');
+            document.getElementById('modal-img').src = '';
+        }
+    });
+    </script>
+</body>
+</html>
