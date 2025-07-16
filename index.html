@@ -167,22 +167,103 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Styles for Academic/Experience cards */
+        .academic-card {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .academic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        .academic-year {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #f97316; /* text-orange-500 */
+            margin-bottom: 0.5rem;
+        }
+        .academic-description {
+            font-size: 1rem; /* text-base */
+            color: #4a5568; /* text-gray-700 */
+            line-height: 1.6;
+        }
+
+        /* Mobile navigation specific styles */
+        .mobile-menu-button {
+            display: none; /* Hidden by default on larger screens */
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-button {
+                display: block; /* Show on small screens */
+            }
+            .nav-links-container {
+                display: none; /* Hide full nav links by default on small screens */
+                flex-direction: column;
+                width: 100%;
+                background-color: #fff;
+                position: absolute;
+                top: 100%; /* Position below the nav bar */
+                left: 0;
+                padding: 1rem 0;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                border-radius: 0.5rem;
+            }
+            .nav-links-container.open {
+                display: flex; /* Show when open */
+            }
+            .nav-links-container a {
+                padding: 0.75rem 1rem;
+                text-align: center;
+                width: 100%;
+            }
+            .nav-links-container .px-5 { /* Adjust Download CV button for mobile */
+                margin-top: 1rem;
+                width: calc(100% - 2rem); /* Full width minus padding */
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .nav-bar-desktop {
+                display: none; /* Hide desktop nav links */
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Navigation Bar -->
     <nav class="fixed w-full bg-white bg-opacity-95 z-50 shadow-md py-4">
-        <div class="container mx-auto flex justify-between items-center px-4">
+        <div class="container mx-auto flex justify-between items-center px-4 relative">
             <div class="flex items-center">
                 <div class="bg-gray-800 text-white px-4 py-2 rounded-md text-sm font-semibold tracking-widest">
                     IT<br>Engineer
                 </div>
             </div>
-            <div class="flex items-center space-x-6">
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="mobile-menu-button text-gray-700 text-2xl focus:outline-none md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-6 nav-bar-desktop">
                 <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Home</a>
                 <a href="#about" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">About</a>
                 <a href="#skills" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Skills</a>
+                <a href="#experiences" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Experience</a>
+                <a href="#projects" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Projects</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Contact</a>
+                <a href="https://drive.google.com/file/d/17lbuS-9pdV43b4ImYUkJ6iro07qrtZHb/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
+            </div>
+            <!-- Mobile Navigation Links (Hidden by default) -->
+            <div id="mobile-nav-links" class="nav-links-container hidden md:hidden">
+                <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Home</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">About</a>
+                <a href="#skills" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Skills</a>
+                <a href="#experiences" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Experience</a>
                 <a href="#projects" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Projects</a>
                 <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Contact</a>
                 <a href="https://drive.google.com/file/d/11r_DjhKHMhLH6pxI1gQdp_Fqh2HI9R__/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
@@ -225,12 +306,10 @@
         <div class="shape-3"></div>
         <div class="container mx-auto max-w-5xl text-center z-10">
             <h2 class="text-4xl font-bold text-orange-500 mb-2">About Me</h2>
-            <p class="text-gray-700 text-lg leading-relaxed mb-4">
-               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Deep knowledge of machine learning algorithms. Proficient in in AI libraries and frameworks. Practical experience with projects such as the Plant Disease Detection System (leveraging Deep Learning and Computer Vision), Agriculture Chatbot System (applying Natural Language Processing), Passport OCR System (utilizing Computer Vision for data extraction), and Myanmar Population Prediction System (employing data analysis).
+            <p class="text-gray-700 text-lg leading-relaxed mb-4 text-left">
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  I  have strong web development knowledges and deep knowledge of machine learning algorithms. Proficient in in AI libraries and frameworks. Experience with Laravel Livewire, Tailwind CSS, Javascript, JQuery, Ajax, PHP, Node.js, Express.js, and other web projects such as Online Trading Management System, Online Wallet System, Omnichannel Messaging Platform. Also have practical experience with projects such as the Plant Disease Detection System (leveraging Deep Learning and Computer Vision), Agriculture Chatbot System (applying Natural Language Processing), Passport OCR System (utilizing Computer Vision for data extraction), and Myanmar Population Prediction System (employing data analysis).
             </p>
-            <p class="text-gray-700 text-lg leading-relaxed mb-12">
-                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; My 3-month internship at Unity IT Solution Co.,Ltd provided valuable hands-on experience with Laravel Livewire, Tailwind CSS, Node.js, and Python, where I contributed to real-world and government system projects.
-            </p>
+            
 
             <h2 class="text-4xl font-bold text-gray-800 mb-8">Education & Certificates</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
@@ -294,30 +373,24 @@
                     <h4 class="text-xl font-semibold text-gray-800">PHP</h4>
                     <p class="text-gray-500 text-sm">Server-side scripting language.</p>
                 </div>
-                <!-- <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-cogs text-gray-600 text-4xl mb-3"></i>
-                    <h4 class="text-xl font-semibold text-gray-800">C++</h4>
-                    <p class="text-gray-500 text-sm">High-performance programming.</p>
-                </div> -->
             </div>
 
               <!-- Databases -->
             <h3 class="text-3xl font-bold text-gray-800 mb-8">Databases</h3>
-            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-12 max-w-lg"> <!-- Adjusted grid columns for better centering of 2 items -->
+            <div class="flex justify-center w-full">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-12 max-w-lg">
                     <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
                         <i class="fas fa-database text-blue-700 text-4xl mb-3"></i>
                         <h4 class="text-xl font-semibold text-gray-800">MySQL</h4>
                         <p class="text-gray-500 text-sm">Relational database system.</p>
                     </div>
                     <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                        <i class="fas fa-leaf text-green-700 text-4xl mb-3"></i> <!-- Leaf icon for MongoDB -->
+                        <i class="fas fa-leaf text-green-700 text-4xl mb-3"></i>
                         <h4 class="text-xl font-semibold text-gray-800">MongoDB</h4>
                         <p class="text-gray-500 text-sm">NoSQL document database.</p>
                     </div>
                 </div>
             </div>
-
 
             <!-- Frameworks & Libraries -->
             <h3 class="text-3xl font-bold text-gray-800 mb-8">Frameworks & Libraries</h3>
@@ -333,7 +406,7 @@
                     <p class="text-gray-500 text-sm">JavaScript runtime environment.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-server text-gray-500 text-4xl mb-3"></i> <!-- Generic icon for Express.js -->
+                    <i class="fas fa-server text-gray-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Express.js</h4>
                     <p class="text-gray-500 text-sm">Minimal Node.js web framework.</p>
                 </div>
@@ -343,23 +416,23 @@
                     <p class="text-gray-500 text-sm">PHP web framework.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fab fa-python text-green-600 text-4xl mb-3"></i> <!-- Python icon for Django -->
+                    <i class="fab fa-python text-green-600 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Django</h4>
                     <p class="text-gray-500 text-sm">High-level Python web framework.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fab fa-python text-blue-600 text-4xl mb-3"></i> <!-- Python icon for Flask -->
+                    <i class="fab fa-python text-blue-600 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Flask</h4>
                     <p class="text-gray-500 text-sm">Micro Python web framework.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-chart-line text-purple-500 text-4xl mb-3"></i> <!-- Generic icon for Streamlit -->
+                    <i class="fas fa-chart-line text-purple-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Streamlit</h4>
                     <p class="text-gray-500 text-sm">For interactive UI in Python.</p>
                 </div>
                
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-wind text-blue-300 text-4xl mb-3"></i> <!-- Wind icon for Tailwind CSS -->
+                    <i class="fas fa-wind text-blue-300 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Tailwind CSS</h4>
                     <p class="text-gray-500 text-sm">Utility-first CSS framework.</p>
                 </div>
@@ -369,12 +442,12 @@
                     <p class="text-gray-500 text-sm">CSS framework for responsive design.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-sync-alt text-gray-500 text-4xl mb-3"></i> <!-- Generic icon for Ajax -->
+                    <i class="fas fa-sync-alt text-gray-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Ajax</h4>
                     <p class="text-gray-500 text-sm">Asynchronous JavaScript and XML.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-hand-pointer text-orange-500 text-4xl mb-3"></i> <!-- Generic icon for jQuery -->
+                    <i class="fas fa-hand-pointer text-orange-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">jQuery</h4>
                     <p class="text-gray-500 text-sm">Fast, small, and feature-rich JS library.</p>
                 </div>
@@ -384,7 +457,7 @@
             <h3 class="text-3xl font-bold text-gray-800 mb-8">AI/ML Specific Libraries</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-robot text-red-500 text-4xl mb-3"></i> <!-- Generic icon for Scikit-learn -->
+                    <i class="fas fa-robot text-red-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Scikit-learn</h4>
                     <p class="text-gray-500 text-sm">Machine learning library for Python.</p>
                 </div>
@@ -399,12 +472,12 @@
                     <p class="text-gray-500 text-sm">Computer Vision library.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-comments text-blue-500 text-4xl mb-3"></i> <!-- Generic icon for NLTK -->
+                    <i class="fas fa-comments text-blue-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">NLTK, spaCy</h4>
                     <p class="text-gray-500 text-sm">Natural Language Processing libraries.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-calculator text-orange-500 text-4xl mb-3"></i> <!-- Generic icon for NumPy/Pandas -->
+                    <i class="fas fa-calculator text-orange-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">NumPy, Pandas</h4>
                     <p class="text-gray-500 text-sm">Data analysis and manipulation.</p>
                 </div>
@@ -412,9 +485,8 @@
 
             <!-- Tools & Version Control -->
               <h3 class="text-3xl font-bold text-gray-800 mb-8">Tools & Version Control</h3>
-            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl"> <!-- Adjusted grid columns for better centering of 2 items -->
-
+            <div class="flex justify-center w-full">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
                     <i class="fab fa-git-alt text-red-600 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Git</h4>
@@ -426,7 +498,7 @@
                     <p class="text-gray-500 text-sm">Code hosting & collaboration platform.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
-                    <i class="fas fa-paint-brush text-pink-500 text-4xl mb-3"></i> <!-- Generic for Design Tools -->
+                    <i class="fas fa-paint-brush text-pink-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Design Tools</h4>
                     <p class="text-gray-500 text-sm">Adobe Photoshop, Illustrator, XD.</p>
                 </div>
@@ -436,8 +508,8 @@
             <!-- Soft Skills -->
               
               <h3 class="text-3xl font-bold text-gray-800 mb-8">Soft Skills</h3>
-            <div class="flex justify-center w-full"> <!-- Added flex and justify-center to center the grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl"> <!-- Adjusted grid columns for better centering of 2 items -->
+            <div class="flex justify-center w-full">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
                     <i class="fas fa-lightbulb text-yellow-500 text-4xl mb-3"></i>
                     <h4 class="text-xl font-semibold text-gray-800">Problem Solving</h4>
@@ -454,6 +526,56 @@
                     <p class="text-gray-500 text-sm">Collaborative and supportive.</p>
                 </div>
             </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="experiences" class="section-container bg-gray-50">
+        <div class="container mx-auto max-w-5xl text-center z-10">
+            <h2 class="text-4xl font-bold text-orange-500 mb-8">Experiences</h2>
+            <div class="flex flex-col space-y-6 text-left max-w-2xl mx-auto">
+                <div class="academic-card">
+                    <h6 class="academic-year">Technological University (Meiktila)</h6>
+                    <p class="academic-description">Bachelor of Engineering in Information Technology (BE.IT-1)</p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">First Year (2017 - 2018)</h6>
+                    <p class="academic-description">Learned computer basics, including typing, software tools, and hardware fundamentals.</p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">Second Year (2018 - 2019)</h6>
+                    <p class="academic-description">Studied C++, Bootstrap and Design Environmental Protection Website.</p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">Third Year (2020 - 2022)</h6>
+                    <p class="academic-description">Learned Java, PHP (vanilla), and basic Laravel. Also worked on a simple Arduino project.</p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">Fourth Year (2022 - 2023)</h6>
+                    <p class="academic-description">Collaborated with a team to create Online Learning System for managing university majors and departments. Learned Artificial Intelligence and did ML project, "Myanmar Agriculture Chatbot System" using NLTK.</p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">Fifth Year (2023 - 2024)</h6>
+                    <p class="academic-description">Worked in a team to create Online Wallet System (Unipay), and displayed in Project Shows. </p>
+                </div>
+                <div class="academic-card">
+                    <h6 class="academic-year">Final Year (2024 - 2025)</h6>
+                    <p class="academic-description">Final Year Project is a data science project, "Myanmar Population Prediction System Using Linear Regression and Artificial Neural Network".</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Experience Section -->
+    <section id="experience" class="section-container bg-gray-100">
+        <div class="container mx-auto max-w-5xl text-center z-10">
+            <h2 class="text-4xl font-bold text-orange-500 mb-8">Professional Experience</h2>
+            <div class="flex flex-col space-y-6 text-left max-w-2xl mx-auto">
+                <div class="academic-card">
+                    <h6 class="academic-year">IT Intern | Unity IT Solution Co.,Ltd (April 2025 – June 2025)</h6>
+                    <p class="academic-description">Gained valuable hands-on experience with Laravel Livewire, Tailwind CSS, Node.js, and Python. Contributed to real-world and government system projects, including the Plant Disease Detection System for the Agriculture Department and the Passport OCR Scanner for the Ministry of Hotels and Tourism.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -594,6 +716,11 @@
     <img id="modal-img" src="" alt="Zoomed Project" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl border-4 border-white">
 </div>
 
+<button id="back-to-top" class="fixed bottom-8 right-8 z-50 bg-orange-500 text-white rounded-full p-3 shadow-lg transition transform duration-300 opacity-0 pointer-events-none hover:bg-orange-600 hover:scale-110"
+    aria-label="Back to Top">
+    <i class="fas fa-arrow-up text-2xl"></i>
+</button>
+
     <!-- Footer -->
     <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
         <div class="container mx-auto px-4">
@@ -614,6 +741,11 @@
                         top: offsetTop,
                         behavior: 'smooth'
                     });
+                     // Close mobile menu after clicking a link
+                    const mobileNavLinks = document.getElementById('mobile-nav-links');
+                    if (mobileNavLinks.classList.contains('open')) {
+                        mobileNavLinks.classList.remove('open');
+                    }
                 }
             });
         });
@@ -668,6 +800,12 @@
             if (initialLink) {
                 initialLink.classList.add('active');
             }
+        });
+
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileNavLinks = document.getElementById('mobile-nav-links');
+            mobileNavLinks.classList.toggle('open');
         });
 
         // Basic form submission message (no backend)
@@ -759,6 +897,21 @@
             this.classList.add('hidden');
             document.getElementById('modal-img').src = '';
         }
+    });
+    // Back to Top Button Logic
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('opacity-100');
+            backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+        } else {
+            backToTopBtn.classList.remove('opacity-100');
+            backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     </script>
 </body>
