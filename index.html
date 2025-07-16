@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myat Phone San - IT Engineer Portfolio</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter and Poppins for headings -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -232,11 +229,54 @@
                 display: none; /* Hide desktop nav links */
             }
         }
+
+        /* Project Image Overlay for icons */
+        .project-image-container {
+            position: relative;
+            overflow: hidden; /* Ensure icons don't spill out */
+            border-radius: 0.5rem; /* Match parent border-radius */
+            margin-bottom: 1rem; /* Space between image and description */
+        }
+
+        .project-img {
+            display: block; /* Remove extra space below image */
+            width: 100%;
+            height: 100%;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease; /* Smooth transition */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            space-x: 1rem; /* Space between icons */
+            border-radius: 0.5rem; /* Match container border-radius */
+        }
+
+        .project-image-container:hover .project-overlay {
+            opacity: 1; /* Show on hover */
+        }
+
+        .zoom-icon, .github-icon {
+            cursor: pointer;
+            color: #fff; /* Default icon color */
+            transition: color 0.3s ease;
+        }
+
+        .zoom-icon:hover, .github-icon:hover {
+            color: #f97316; /* Orange hover color */
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Navigation Bar -->
     <nav class="fixed w-full bg-white bg-opacity-95 z-50 shadow-md py-4">
         <div class="container mx-auto flex justify-between items-center px-4 relative">
             <div class="flex items-center">
@@ -244,11 +284,9 @@
                     IT<br>Engineer
                 </div>
             </div>
-            <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="mobile-menu-button text-gray-700 text-2xl focus:outline-none md:hidden">
                 <i class="fas fa-bars"></i>
             </button>
-            <!-- Desktop Navigation Links -->
             <div class="hidden md:flex items-center space-x-6 nav-bar-desktop">
                 <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Home</a>
                 <a href="#about" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">About</a>
@@ -258,7 +296,6 @@
                 <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Contact</a>
                 <a href="https://drive.google.com/file/d/17lbuS-9pdV43b4ImYUkJ6iro07qrtZHb/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
             </div>
-            <!-- Mobile Navigation Links (Hidden by default) -->
             <div id="mobile-nav-links" class="nav-links-container hidden md:hidden">
                 <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Home</a>
                 <a href="#about" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">About</a>
@@ -266,19 +303,21 @@
                 <a href="#experiences" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Experience</a>
                 <a href="#projects" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Projects</a>
                 <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition duration-300 font-semibold">Contact</a>
-                <a href="https://drive.google.com/file/d/11r_DjhKHMhLH6pxI1gQdp_Fqh2HI9R__/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
+                <a href="https://drive.google.com/file/d/17lbuS-9pdV43b4ImYUkJ6iro07qrtZHb/view?usp=sharing" download class="px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">Download CV</a>
             </div>
         </div>
     </nav>
 
-    <!-- Home Section -->
     <section id="home" class="section-container bg-white text-center md:text-left relative">
         <div class="shape-1"></div>
         <div class="shape-2"></div>
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4 z-10">
             <div class="md:w-1/2 mb-10 md:mb-0">
                 <p class="text-orange-500 text-lg mb-2">Hello, I'm</p>
-                <h1 class="text-6xl md:text-7xl font-extrabold text-gray-800 leading-tight mb-4">MYAT PHONE SAN</h1>
+                <h1 class="text-6xl md:text-7xl font-extrabold text-gray-800 leading-tight mb-4">
+                    <span id="auto-type-name"></span>
+                    <span id="auto-type-cursor" class="border-r-2 border-orange-500 animate-pulse"></span>
+                </h1>
                 <p class="text-2xl text-gray-600 mb-6">A Creative IT Engineer from Meiktila</p>
                 <p class="text-lg text-gray-500 mb-8">I'm very passionate and dedicated to my work.</p>
                 <div class="flex items-center space-x-4">
@@ -291,7 +330,6 @@
             <div class="md:w-1/2 relative flex justify-center items-center">
                 <div class="relative w-80 h-80 md:w-96 md:h-96 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden shadow-2xl">
                     <img src="profilephoto.jpg" alt="Myat Phone San Profile" class="w-full h-full object-cover rounded-full z-10 transform scale-105">
-                    <!-- Floating icons -->
                     <i class="fab fa-react absolute text-blue-400 text-5xl icon-float-1" style="top: 10%; left: 10%;"></i>
                     <i class="fab fa-node-js absolute text-green-500 text-5xl icon-float-2" style="top: 20%; right: 5%;"></i>
                     <i class="fab fa-python absolute text-yellow-500 text-5xl icon-float-3" style="bottom: 15%; left: 5%;"></i>
@@ -301,7 +339,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="section-container bg-gray-50">
         <div class="shape-3"></div>
         <div class="container mx-auto max-w-5xl text-center z-10">
@@ -339,13 +376,11 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills" class="section-container bg-gray-100">
         <div class="shape-4"></div>
         <div class="container mx-auto max-w-6xl text-center z-10">
             <h2 class="text-4xl font-bold text-orange-500 mb-12">My Dev Arsenal</h2>
 
-            <!-- Languages -->
             <h3 class="text-3xl font-bold text-gray-800 mb-8">Languages</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -375,8 +410,7 @@
                 </div>
             </div>
 
-              <!-- Databases -->
-            <h3 class="text-3xl font-bold text-gray-800 mb-8">Databases</h3>
+              <h3 class="text-3xl font-bold text-gray-800 mb-8">Databases</h3>
             <div class="flex justify-center w-full">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 mb-12 max-w-lg">
                     <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -392,7 +426,6 @@
                 </div>
             </div>
 
-            <!-- Frameworks & Libraries -->
             <h3 class="text-3xl font-bold text-gray-800 mb-8">Frameworks & Libraries</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -453,7 +486,6 @@
                 </div>
             </div>
 
-            <!-- AI/ML Specific Libraries -->
             <h3 class="text-3xl font-bold text-gray-800 mb-8">AI/ML Specific Libraries</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -463,7 +495,7 @@
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
                     <i class="fas fa-brain text-purple-600 text-4xl mb-3"></i>
-                    <h4 class="text-xl font-semibold text-gray-800">TensorFlow/Keras</h4>
+                    <h4 class="text-xl font-semibold text-gray-800">TensorFlow/<br>Keras</h4>
                     <p class="text-gray-500 text-sm">Deep Learning frameworks.</p>
                 </div>
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -483,8 +515,7 @@
                 </div>
             </div>
 
-            <!-- Tools & Version Control -->
-              <h3 class="text-3xl font-bold text-gray-800 mb-8">Tools & Version Control</h3>
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">Tools & Version Control</h3>
             <div class="flex justify-center w-full">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -505,9 +536,7 @@
             </div>
         </div>
 
-            <!-- Soft Skills -->
-              
-              <h3 class="text-3xl font-bold text-gray-800 mb-8">Soft Skills</h3>
+            <h3 class="text-3xl font-bold text-gray-800 mb-8">Soft Skills</h3>
             <div class="flex justify-center w-full">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12 max-w-3xl">
                 <div class="skill-card bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center">
@@ -530,7 +559,6 @@
         </div>
     </section>
 
-    <!-- Education Section -->
     <section id="experiences" class="section-container bg-gray-50">
         <div class="container mx-auto max-w-5xl text-center z-10">
             <h2 class="text-4xl font-bold text-orange-500 mb-8">Experiences</h2>
@@ -567,7 +595,6 @@
         </div>
     </section>
 
-    <!-- Professional Experience Section -->
     <section id="experience" class="section-container bg-gray-100">
         <div class="container mx-auto max-w-5xl text-center z-10">
             <h2 class="text-4xl font-bold text-orange-500 mb-8">Professional Experience</h2>
@@ -580,17 +607,21 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="section-container bg-white">
         <div class="container mx-auto max-w-6xl text-center z-10">
             <h2 class="text-4xl font-bold text-orange-500 mb-4">Projects</h2>
             <p class="text-gray-700 text-lg mb-12">My Amazing Works</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- AI Project 1: Plant Disease Detection System -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Plant Disease Detection System</h3>
-                    <img src="project1.png" alt="Plant Disease Detection System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <div class="relative project-image-container">
+                        <img src="project1.png" alt="Plant Disease Detection System" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/Plant_AI_Detector" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                     <p class="text-gray-600 text-sm mb-3 original-description">
                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span>AI-powered image classification for accurate plant disease diagnosis.</li>
@@ -601,10 +632,15 @@
                     
                 </div>
 
-                <!-- AI Project 2: Agriculture Chatbot System -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Agriculture Chatbot System</h3>
-                    <img src="project2.png" alt="Agriculture Chatbot System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <div class="relative project-image-container">
+                        <img src="project2.png" alt="Agriculture Chatbot System" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/Agri_Chatbot" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                     <p class="text-gray-600 text-sm mb-3 original-description">
                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span>  Conversational AI assistant for agricultural topics</li>
@@ -615,10 +651,15 @@
                     
                 </div>
 
-                <!-- AI Project 3: Passport OCR System -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Passport Optical Character Recognition</h3>
-                    <img src="project3.png" alt="Passport OCR System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <div class="relative project-image-container">
+                        <img src="project3.png" alt="Passport OCR System" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/Passport_Scanner_OCR" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                      <p class="text-gray-600 text-sm mb-3 original-description">
                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Optical Character Recognition for data extraction from passport documents.</li>
@@ -631,10 +672,15 @@
 
                 
 
-                <!-- Other Project 1: Online Trading Management System -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Online Trading Management System</h3>
-                    <img src="project4.png" alt="Online Trading Management System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img"">
+                    <div class="relative project-image-container">
+                        <img src="project4.png" alt="Online Trading Management System" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/Trading-Management-System" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                     <p class="text-gray-600 text-sm mb-3 original-description">
                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Admin Auth, Dashboard, Teacher, Student, Course, Batch, Gallery Management.</li>
@@ -645,10 +691,15 @@
                    
                 </div>
 
-                <!-- Other Project 2: Online Wallet System (Unipay) -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Online Wallet System (Unipay)</h3>
-                    <img src="project5.jpg" alt="Online Wallet System (Unipay)" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <div class="relative project-image-container">
+                        <img src="project5.jpg" alt="Online Wallet System (Unipay)" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/Unipaylarawallet" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                     <p class="text-gray-600 text-sm mb-3 original-description">
                         <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> User authentication, wallet management, transactions, QR code payment..</li>
@@ -659,10 +710,15 @@
 
                 </div>
 
-                <!-- Other Project 3: Omnichannel Messaging System -->
                 <div class="project-card bg-gray-100 p-6 rounded-lg shadow-md border border-gray-200">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Omnichannel Messaging Platform</h3>
-                    <img src="project6.png" alt="Omnichannel Messaging System" class="w-full h-40 object-cover rounded-md mb-4 cursor-zoom-in project-img">
+                    <div class="relative project-image-container">
+                        <img src="project6.png" alt="Omnichannel Messaging System" class="w-full h-40 object-cover rounded-md project-img">
+                        <div class="project-overlay">
+                            <button class="zoom-icon text-3xl mr-4"><i class="fas fa-search-plus"></i></button>
+                            <a href="https://github.com/Myat-Phone-San/omnichannel" target="_blank" class="github-icon text-3xl"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                     <p class="text-gray-600 text-sm mb-3 original-description">
                          <ul class="list-none text-lg text-gray-700 space-y-2 text-left">
                         <li><i class="fas fa-award text-yellow-500 mr-2"></i><span class="font-semibold">Features:</span> Unified system for LINE, Telegram, Messenger, Instagram (send/receive messages).</li>
@@ -677,7 +733,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="section-container bg-gray-100 relative">
         <div class="shape-1" style="top: 80%; left: -10%; background: linear-gradient(45deg, #f97316, #fbbf24); opacity: 0.2; filter: blur(100px);"></div>
         <div class="shape-2" style="top: 10%; right: -5%; background: linear-gradient(135deg, #6366f1, #8b5cf6); opacity: 0.2; filter: blur(100px);"></div>
@@ -710,8 +765,7 @@
         </div>
     </section>
 
-    <!-- Zoom Modal -->
-<div id="image-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
     <span id="close-modal" class="absolute top-6 right-8 text-white text-4xl cursor-pointer">&times;</span>
     <img id="modal-img" src="" alt="Zoomed Project" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl border-4 border-white">
 </div>
@@ -721,7 +775,6 @@
     <i class="fas fa-arrow-up text-2xl"></i>
 </button>
 
-    <!-- Footer -->
     <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
         <div class="container mx-auto px-4">
             &copy; 2025 Myat Phone San. All rights reserved.
@@ -729,6 +782,26 @@
     </footer>
 
     <script>
+
+        // Auto typing animation for name
+    (function() {
+        const nameText = "MYAT PHONE SAN";
+        const nameElement = document.getElementById('auto-type-name');
+        const cursorElement = document.getElementById('auto-type-cursor');
+        let nameIndex = 0;
+
+        function typeName() {
+            if (nameIndex <= nameText.length) {
+                nameElement.textContent = nameText.substring(0, nameIndex);
+                nameIndex++;
+                setTimeout(typeName, 120);
+            } else {
+                cursorElement.style.display = 'none';
+            }
+        }
+        window.addEventListener('DOMContentLoaded', typeName);
+    })();
+
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -821,7 +894,7 @@
             }, 5000);
         });
 
-        // Gemini API Integration for Project Descriptions
+        // Gemini API Integration for Project Descriptions (Existing, untouched)
         document.querySelectorAll('.generate-description-btn').forEach(button => {
             button.addEventListener('click', async function() {
                 const projectCard = this.closest('.project-card');
@@ -876,43 +949,45 @@
         });
 
 
-         // Zoom modal for project images
-    document.querySelectorAll('.project-img').forEach(img => {
-        img.addEventListener('click', function() {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            modalImg.src = this.src;
-            modal.classList.remove('hidden');
+         // Zoom modal for project images (Modified to trigger from zoom-icon)
+        document.querySelectorAll('.zoom-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const modal = document.getElementById('image-modal');
+                const modalImg = document.getElementById('modal-img');
+                // Get the image source from the sibling img tag within the same project-image-container
+                const projectImage = this.closest('.project-image-container').querySelector('.project-img');
+                modalImg.src = projectImage.src;
+                modal.classList.remove('hidden');
+            });
         });
-    });
 
-    document.getElementById('close-modal').addEventListener('click', function() {
-        document.getElementById('image-modal').classList.add('hidden');
-        document.getElementById('modal-img').src = '';
-    });
-
-    // Optional: Close modal on background click
-    document.getElementById('image-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            this.classList.add('hidden');
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('image-modal').classList.add('hidden');
             document.getElementById('modal-img').src = '';
-        }
-    });
-    // Back to Top Button Logic
-    const backToTopBtn = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.add('opacity-100');
-            backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
-        } else {
-            backToTopBtn.classList.remove('opacity-100');
-            backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
-        }
-    });
+        });
 
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+        // Optional: Close modal on background click
+        document.getElementById('image-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+                document.getElementById('modal-img').src = '';
+            }
+        });
+        // Back to Top Button Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('opacity-100');
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                backToTopBtn.classList.remove('opacity-100');
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
